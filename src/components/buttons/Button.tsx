@@ -1,5 +1,4 @@
 import { Pressable, Text, GestureResponderEvent } from "react-native";
-import "./global.css";
 
 type ButtonProps = {
     title: string;
