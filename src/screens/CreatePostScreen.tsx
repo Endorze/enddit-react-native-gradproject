@@ -46,8 +46,6 @@ export function CreatePostScreen() {
       },
       body: form,
     });
-
-    console.log("Tried to create a post but: ", await res.json());
   };
 
   return (

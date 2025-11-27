@@ -1,7 +1,6 @@
 import { View, Text, } from "react-native";
 import { Comment } from "../../../types/comment";
 
-//
 const Comment = ({ comment }: Comment) => {
 
     return (

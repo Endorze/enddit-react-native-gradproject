@@ -13,7 +13,7 @@ export function LoginScreen() {
         setLoading(true); 
         await login(email, password);
     } catch (err: any) {
-        console.log("error: ", err);
+        console.error(err);
     } finally {
         setLoading(false);
     }

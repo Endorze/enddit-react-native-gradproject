@@ -8,6 +8,7 @@ const API_URL = Constants.expoConfig?.extra?.API_URL;
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [accessToken, setAccessToken] = useState<string | null>(null);
+  const [user, setUser] = useState<any | null>(null);
 
   useEffect(() => {
     // TODO: load token from storage and set isAuthenticated
@@ -15,29 +16,29 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const login = async (email: string, password: string) => {
     const res = await fetch(`${API_URL}/api/auth/login`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({email, password})
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ email, password })
     })
 
     if (!res.ok) {
-        throw new Error("Invalid login credentials");
+      throw new Error("Invalid login credentials");
     }
 
     const data = await res.json();
     setAccessToken(data.access_token);
-    console.log({data});
-      setIsAuthenticated(true);
+    setUser(data.user);
+    setIsAuthenticated(true);
   }
   const logout = () => {
-      setIsAuthenticated(false);
-      setAccessToken(null);
-  } 
+    setIsAuthenticated(false);
+    setAccessToken(null);
+  }
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, accessToken, login, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, accessToken, user, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

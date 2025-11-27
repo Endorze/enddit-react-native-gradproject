@@ -1,11 +1,10 @@
 import { View, Text, Image, Pressable } from "react-native";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FontAwesome } from "@expo/vector-icons";
 import { Post } from "../../types/post";
 import { AuthorAvatar } from "../AvatarImage/avatarImage";
 import { useQuery } from "@tanstack/react-query";
 import { getCommentsForPost } from "../../utils/getPostComments";
-import CommentsList from "./CommentList";
 import { CommentForPost } from "../../types/commentlist";
 import { useToggleLike } from "../../utils/toggleLike";
 import { useAuth } from "../../context/AuthContext";
@@ -50,7 +49,7 @@ export function PostCard({ post }: { post: Post }) {
   return (
     <View className="mb-3 rounded-xl bg-card p-4">
       <View>
-        <AuthorAvatar userId={post.user_id} />
+        <AuthorAvatar userId={post.user_id} username={post.username} />
         <Text className="text-white text-2xl font-semibold">
           {post.username}
         </Text>

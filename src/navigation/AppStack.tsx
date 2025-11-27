@@ -1,10 +1,12 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { HomeScreen } from "../screens/HomeScreen";
 import { AppTabs } from "./AppTabs";
+import { PublicProfileScreen } from "../screens/PublicProfileScreen";
 
 export type AppStackParamList = {
   Home: undefined,
-  Tabs: undefined
+  Tabs: undefined,
+  PublicProfile: undefined,
 };
 
 const Stack = createNativeStackNavigator<AppStackParamList>();
@@ -26,6 +28,11 @@ export function AppStack() {
         component={HomeScreen}
         options={{ title: "Enddit" }}
       />
+
+      <Stack.Screen name="PublicProfile" component={PublicProfileScreen} />
+
     </Stack.Navigator>
+
+
   );
 }

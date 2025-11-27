@@ -2,7 +2,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { HomeScreen } from "../screens/HomeScreen";
 import { CreatePostScreen } from "../screens/CreatePostScreen";
 import { Ionicons } from "@expo/vector-icons";
-import { UserProfileScreen } from "../screens/UserProfileScreen";
+import { MyProfileScreen } from "../screens/MyProfileScreen";
 import { InboxScreen } from "../screens/InboxScreen";
 import { FriendScreen } from "../screens/FriendScreen";
 
@@ -54,7 +54,7 @@ export function AppTabs() {
       <Tab.Screen name="Friends" component={FriendScreen} />
       <Tab.Screen name="CreatePost" options={{ tabBarLabel: () => null }} component={CreatePostScreen} />
       <Tab.Screen name="Inbox" component={InboxScreen} />
-      <Tab.Screen name="Profile" component={UserProfileScreen} />
+      <Tab.Screen name="Profile" component={MyProfileScreen} />
     </Tab.Navigator>
   );
 }
