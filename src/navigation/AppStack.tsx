@@ -2,11 +2,15 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { HomeScreen } from "../screens/HomeScreen";
 import { AppTabs } from "./AppTabs";
 import { PublicProfileScreen } from "../screens/PublicProfileScreen";
+import { FriendScreen } from "../screens/FriendScreen";
+import { ChatScreen } from "../screens/ChatScreen";
 
 export type AppStackParamList = {
   Home: undefined,
   Tabs: undefined,
   PublicProfile: undefined,
+  Friends: undefined,
+  Chat: undefined,
 };
 
 const Stack = createNativeStackNavigator<AppStackParamList>();
@@ -30,6 +34,9 @@ export function AppStack() {
       />
 
       <Stack.Screen name="PublicProfile" component={PublicProfileScreen} />
+      <Stack.Screen name="Friends" component={FriendScreen} />
+      <Stack.Screen name="Chat" component={ChatScreen} />
+
 
     </Stack.Navigator>
 

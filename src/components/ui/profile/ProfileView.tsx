@@ -5,6 +5,9 @@ type ProfileViewProps = {
   description?: string;
   avatarUrl?: string | null;
   isOwnProfile?: boolean;
+  onEditProfilePress?: () => void;
+  onAddFriendPress?: () => void;
+  addFriendDisabled?: boolean;
 };
 
 export default function ProfileView({
@@ -12,6 +15,7 @@ export default function ProfileView({
   description,
   avatarUrl,
   isOwnProfile = false,
+  onAddFriendPress,
 }: ProfileViewProps) {
   return (
     <View className="flex-1 items-center justify-center bg-card px-6">
@@ -40,13 +44,12 @@ export default function ProfileView({
         {description || "No bio yet"}
       </Text>
 
-      {/* Actions beror på om det är din egen profil */}
       {isOwnProfile ? (
         <Pressable className="p-3 bg-green-600 rounded-lg">
           <Text className="text-white font-semibold">Edit Profile</Text>
         </Pressable>
       ) : (
-        <Pressable className="p-3 bg-blue-600 rounded-lg">
+        <Pressable onPress={onAddFriendPress} className="p-3 bg-blue-600 rounded-lg">
           <Text className="text-white font-semibold">Add Friend</Text>
         </Pressable>
       )}
