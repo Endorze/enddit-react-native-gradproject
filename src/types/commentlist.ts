@@ -4,5 +4,9 @@ export type CommentForPost = {
   content: string;
   created_at: string;
   parent_id: number | null;
-  user: { username: string };
+  user: {
+    username: string,
+    id: string,
+  };
+
 };

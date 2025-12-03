@@ -6,7 +6,7 @@ export function HomeScreen() {
   const { logout } = useAuth();
 
   return (
-    <View className="flex-1 items-center justify-center bg-background">
+    <View className="flex-1 items-center justify-center">
       <Text className="text-2xl text-white mb-4">Welcome to Enddit 👋</Text>
       <Pressable
         onPress={logout}

@@ -1,5 +1,6 @@
 import { Image, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { useState } from "react";
 import { getAvatarUrl } from "../../utils/getAvatarUrl";
 
 type AuthorAvatarProps = {
@@ -8,8 +9,14 @@ type AuthorAvatarProps = {
 };
 
 export function AuthorAvatar({ userId, username }: AuthorAvatarProps) {
-  const uri = getAvatarUrl(userId);
+  const [hasError, setHasError] = useState(false);
   const navigation = useNavigation<any>();
+
+  const uri = getAvatarUrl(userId);
+
+  const source = !uri || hasError
+    ? require("../../../assets/default-avatar.png")
+    : { uri };
 
   return (
     <Pressable
@@ -19,9 +26,10 @@ export function AuthorAvatar({ userId, username }: AuthorAvatarProps) {
       className="w-10 h-10"
     >
       <Image
-        source={{ uri }}
+        source={source}
         className="w-10 h-10 rounded-full"
         resizeMode="cover"
+        onError={() => setHasError(true)}
       />
     </Pressable>
   );

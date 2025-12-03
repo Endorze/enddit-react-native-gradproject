@@ -9,7 +9,7 @@ const API_URL = Constants.expoConfig?.extra?.API_URL;
 
 export default function MainFeed() {
 
-  const {accessToken} = useAuth();
+  const { accessToken } = useAuth();
 
   const {
     data: posts,
@@ -23,7 +23,7 @@ export default function MainFeed() {
           Authorization: `Bearer ${accessToken}`
         }
       });
-    
+
 
       if (!res.ok) throw new Error("Failed to load posts");
       return res.json();
@@ -56,6 +56,11 @@ export default function MainFeed() {
       keyExtractor={(item) => item.id.toString()}
       contentContainerStyle={{ padding: 16 }}
       renderItem={({ item }) => <PostCard post={item} />}
+      initialNumToRender={6}       
+      maxToRenderPerBatch={6}
+      windowSize={5}
+      removeClippedSubviews 
     />
+
   );
 }

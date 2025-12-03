@@ -32,13 +32,34 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(data.user);
     setIsAuthenticated(true);
   }
+
+  const signUp = async (email: string, password: string, username: string) => {
+  const res = await fetch(`${API_URL}/api/auth/signup`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ email, password, username }),
+  });
+
+  if (!res.ok) {
+    throw new Error("Invalid signup credentials");
+  }
+
+  const data = await res.json();
+  setAccessToken(data.access_token);
+  setUser(data.user);
+  setIsAuthenticated(true);
+};
+
+
   const logout = () => {
     setIsAuthenticated(false);
     setAccessToken(null);
   }
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, accessToken, user, login, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, accessToken, user, login, logout, signUp }}>
       {children}
     </AuthContext.Provider>
   );

@@ -15,6 +15,7 @@ module.exports = {
         card: "#0f172a",
         text: "#e5e7eb",
         muted: "#64748b",
+        subtext: "#808080"
       },
     },
   },

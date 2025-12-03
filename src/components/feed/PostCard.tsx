@@ -1,8 +1,8 @@
-import { View, Text, Image, Pressable } from "react-native";
+import { View, Text, Image, Pressable, Modal } from "react-native";
 import { useState } from "react";
 import { FontAwesome } from "@expo/vector-icons";
 import { Post } from "../../types/post";
-import { AuthorAvatar } from "../AvatarImage/avatarImage";
+import { AuthorAvatar } from "../AuthorAvatar/AuthorAvatar";
 import { useQuery } from "@tanstack/react-query";
 import { getCommentsForPost } from "../../utils/getPostComments";
 import { CommentForPost } from "../../types/commentlist";
@@ -22,6 +22,7 @@ export function PostCard({ post }: { post: Post }) {
   const [likesCount, setLikesCount] = useState(post.likesCount ?? 0);
   const [liked, setLiked] = useState(!!post.likedByCurrentUser);
   const [isToggling, setIsToggling] = useState(false);
+  const [toggleModal, setToggleModal] = useState(false);
 
   const handleToggleLike = async () => {
     if (isToggling) return;
@@ -44,38 +45,37 @@ export function PostCard({ post }: { post: Post }) {
     }
   };
 
-  
+
 
   return (
-    <View className="mb-3 rounded-xl bg-card p-4">
-      <View>
-        <AuthorAvatar userId={post.user_id} username={post.username} />
-        <Text className="text-white text-2xl font-semibold">
-          {post.username}
-        </Text>
-      </View>
+    <View className="mb-3 w-full border-top shadow-sm bg-white">
+      <View className="p-4 flex flex-col">
+        <View className="flex flex-row items-center gap-2">
+          <AuthorAvatar userId={post.user_id} username={post.username} />
+          <Text className="text-black text-2xl font-semibold">
+            {post.username}
+          </Text>
+        </View>
 
-      <Text className="text-lg text-white font-semibold mb-1">
-        {post.title}
-      </Text>
+        <Text className="text-lg text-black font-semibold mb-1">
+          {post.title}
+        </Text>
+        <Text className="text-muted">{post.content}</Text>
+      </View>
 
       {post.image && (
         <Image
           source={{ uri: post.image }}
-          className="w-full h-48 rounded-lg mb-2"
+          className="w-full h-80"
           resizeMode="cover"
         />
       )}
 
-      <Text className="text-muted">{post.content}</Text>
+      {/* ⛔ Ta bort denna från "vanliga" layouten så den inte gör posten lång */}
+      {/* {comments && <CommentSection postId={post.id} />} */}
 
-      <Text className="text-white mt-1">
-        {likesCount} {likesCount === 1 ? "like" : "likes"}
-      </Text>
-
-      {comments && <CommentSection postId={post.id} />}
-
-      <View className="mt-2 flex-row items-center justify-between">
+      <View className="flex-row items-center justify-between px-4 py-2">
+        {/* LIKE KNAPP */}
         <Pressable
           onPress={handleToggleLike}
           disabled={isToggling}
@@ -85,18 +85,44 @@ export function PostCard({ post }: { post: Post }) {
           <FontAwesome
             name={liked ? "thumbs-up" : "thumbs-o-up"}
             size={20}
-
             color={liked ? "#3b82f6" : "#9ca3af"}
           />
           <Text className={`ml-2 ${liked ? "text-blue-400" : "text-gray-200"}`}>
-            {liked ? "Liked" : "Like"}
+            {likesCount}
           </Text>
         </Pressable>
 
-        <Text className="text-gray-300">
-          {likesCount} {likesCount === 1 ? "like" : "likes"}
-        </Text>
+        <Pressable
+          onPress={() => setToggleModal(true)}
+          className="flex-row items-center"
+          style={({ pressed }) => [{ opacity: pressed ? 0.7 : 1 }]}
+        >
+          <FontAwesome name="comment-o" size={20} color="#9ca3af" />
+          <Text className="ml-2 text-gray-400">
+            {comments?.length ?? 0} kommentarer
+          </Text>
+        </Pressable>
       </View>
+
+      <Modal
+        visible={toggleModal}
+        animationType="slide"
+        transparent
+        onRequestClose={() => setToggleModal(false)}
+      >
+        <View className="flex-1 justify-end bg-black/40">
+          <View className="h-[100%] bg-white rounded-t-3xl p-4">
+            <View className="flex-row justify-between items-center mb-3">
+              <Text className="text-lg font-semibold">Kommentarer</Text>
+              <Pressable onPress={() => setToggleModal(false)}>
+                <Text className="text-blue-500 font-semibold">Stäng</Text>
+              </Pressable>
+            </View>
+
+            <CommentSection postId={post.id} />
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 }

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { View, Text, Pressable, Image } from "react-native";
 
 type ProfileViewProps = {
@@ -17,6 +18,14 @@ export default function ProfileView({
   isOwnProfile = false,
   onAddFriendPress,
 }: ProfileViewProps) {
+
+  const [avatarError, setAvatarError] = useState(false);
+
+  const source =
+    !avatarUrl || avatarError
+      ? require("../../../../assets/default-avatar.png")
+      : { uri: avatarUrl };
+
   return (
     <View className="flex-1 items-center justify-center bg-card px-6">
       <Text className="text-2xl text-white mb-4">
@@ -24,15 +33,15 @@ export default function ProfileView({
       </Text>
 
       <View className="w-24 h-24 rounded-full bg-gray-700 mb-4 overflow-hidden items-center justify-center">
-        {avatarUrl ? (
+        {avatarUrl &&
           <Image
-            source={{ uri: avatarUrl }}
+            source={source}
             className="w-24 h-24"
             resizeMode="cover"
+            onError={() => setAvatarError(true)}
           />
-        ) : (
-          <Text className="text-white text-xs">No avatar</Text>
-        )}
+        }
+
       </View>
 
 
