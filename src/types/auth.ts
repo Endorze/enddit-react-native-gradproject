@@ -5,4 +5,5 @@ export type AuthContextValue = {
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
   signUp: (email: string, password: string, username: string) => Promise<void>;
+  isLoading: boolean,
 };

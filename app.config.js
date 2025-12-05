@@ -6,5 +6,8 @@ export default {
     extra: {
       API_URL: "http://192.168.0.22:4000"
     },
+    "plugins": [
+    "expo-secure-store"
+  ]
   },
 };

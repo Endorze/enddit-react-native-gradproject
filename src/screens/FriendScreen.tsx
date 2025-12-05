@@ -64,7 +64,6 @@ export function FriendScreen() {
           keyExtractor={(item) => item.friendshipId}
           contentContainerStyle={{ paddingBottom: 24 }}
           renderItem={({ item }) => {
-            // 🧠 bygg avatar-url utifrån userId
             const avatarUrl = getAvatarUrl(String(item.userId));
 
             return (

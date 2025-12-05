@@ -3,9 +3,11 @@ import { useAuth } from "../context/AuthContext";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { getFriendRequests, FriendRequest } from "../utils/getFriendRequests";
 import { respondToFriendRequest } from "../utils/respondToFriendRequest";
+import { useIsFocused } from "@react-navigation/native";
 
 export function InboxScreen() {
   const { accessToken } = useAuth();
+  const isFocused = useIsFocused();
 
   const {
     data: requests = [],
@@ -16,6 +18,7 @@ export function InboxScreen() {
     queryKey: ["friendRequests"],
     queryFn: () => getFriendRequests(accessToken!),
     enabled: !!accessToken,
+    refetchInterval: isFocused ? 10000 : false
   });
 
   const respondMutation = useMutation({
@@ -41,6 +44,7 @@ export function InboxScreen() {
   }
 
   if (error) {
+    console.log(error);
     return (
       <View className="flex-1 items-center justify-center bg-background px-4">
         <Text className="text-red-400">Failed to load friend requests.</Text>

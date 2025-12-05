@@ -16,18 +16,14 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { getMessages, Message } from "../utils/getMessages";
 import { sendMessage } from "../utils/sendMessage";
 import { getAvatarUrl } from "../utils/getAvatarUrl";
-
-type RouteParams = {
-  friendId: string;
-  username: string;
-  avatarUrl?: string | null;
-};
+import { isSameDay, formatDateHeader, formatTime } from "../utils/dateHelpers";
+import { ChatParams } from "../types/chatParams";
 
 export function ChatScreen() {
   const { accessToken, user } = useAuth();
   const route = useRoute();
   const { friendId, username, avatarUrl: routeAvatarUrl } =
-    route.params as RouteParams;
+    route.params as ChatParams;
 
   const [text, setText] = useState("");
   const [friendAvatarError, setFriendAvatarError] = useState(false);
@@ -44,7 +40,7 @@ export function ChatScreen() {
     queryKey: ["messages", friendId],
     queryFn: () => getMessages(friendId, accessToken!),
     enabled: !!accessToken && !!friendId,
-    refetchInterval: 1000,
+    refetchInterval: 3000,
   });
 
   const sendMutation = useMutation({
@@ -114,12 +110,12 @@ export function ChatScreen() {
             ref={flatListRef}
             data={messages}
             keyExtractor={(item) => item.id}
-            contentContainerStyle={{ padding: 12 }}
+            contentContainerStyle={{ padding: 12, paddingBottom: 8 }}
             keyboardShouldPersistTaps="handled"
             onContentSizeChange={() => {
               flatListRef.current?.scrollToEnd({ animated: true });
             }}
-            renderItem={({ item }) => {
+            renderItem={({ item, index }) => {
               const isMe = item.sender_id === myId;
 
               const avatarSource = isMe
@@ -127,41 +123,63 @@ export function ChatScreen() {
                   ? defaultAvatar
                   : { uri: myAvatarUrl }
                 : friendAvatarError || !friendAvatarUrl
-                ? defaultAvatar
-                : { uri: friendAvatarUrl };
+                  ? defaultAvatar
+                  : { uri: friendAvatarUrl };
+
+              const previous = index > 0 ? messages[index - 1] : null;
+
+              const showDateHeader =
+                !previous ||
+                !isSameDay(
+                  previous.created_at as unknown as string,
+                  item.created_at as unknown as string
+                );
 
               return (
-                <View
-                  className={`mb-2 flex-row items-end ${
-                    isMe ? "justify-end" : "justify-start"
-                  }`}
-                >
-                  {!isMe && (
-                    <Image
-                      source={avatarSource}
-                      className="w-8 h-8 rounded-full mr-2"
-                      resizeMode="cover"
-                      onError={() => setFriendAvatarError(true)}
-                    />
+                <>
+                  {showDateHeader && (
+                    <View className="my-3 items-center">
+                      <Text className="text-gray-500 text-xs font-semibold">
+                        {formatDateHeader(item.created_at as unknown as string)}
+                      </Text>
+                    </View>
                   )}
 
                   <View
-                    className={`max-w-[70%] px-3 py-2 rounded-2xl ${
-                      isMe ? "bg-blue-600" : "bg-gray-400"
-                    }`}
+                    className={`mb-2 flex-row items-end ${isMe ? "justify-end" : "justify-start"
+                      }`}
                   >
-                    <Text className="text-white">{item.content}</Text>
-                  </View>
+                    {!isMe && (
+                      <Image
+                        source={avatarSource}
+                        className="w-8 h-8 rounded-full mr-2"
+                        resizeMode="cover"
+                        onError={() => setFriendAvatarError(true)}
+                      />
+                    )}
 
-                  {isMe && (
-                    <Image
-                      source={avatarSource}
-                      className="w-8 h-8 rounded-full ml-2"
-                      resizeMode="cover"
-                      onError={() => setMyAvatarError(true)}
-                    />
-                  )}
-                </View>
+                    <View
+                      className={`max-w-[70%] px-3 py-2 rounded-2xl ${isMe ? "bg-blue-600" : "bg-gray-400"
+                        }`}
+                    >
+                      <Text className="text-white">{item.content}</Text>
+                      {item.created_at && (
+                        <Text className="text-gray-200 text-[10px] mt-1 self-end">
+                          {formatTime(item.created_at as unknown as string)}
+                        </Text>
+                      )}
+                    </View>
+
+                    {isMe && (
+                      <Image
+                        source={avatarSource}
+                        className="w-8 h-8 rounded-full ml-2"
+                        resizeMode="cover"
+                        onError={() => setMyAvatarError(true)}
+                      />
+                    )}
+                  </View>
+                </>
               );
             }}
           />
