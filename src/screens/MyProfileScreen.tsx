@@ -1,9 +1,9 @@
 import { View, Text, Pressable } from "react-native";
-import { getUserProfile } from "../utils/getUserProfile";
+import { getUserProfile } from "../utils/profileUtils/getUserProfile";
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "../context/AuthContext";
 import ProfileView from "../components/ui/profile/ProfileView";
-import { getAvatarUrl } from "../utils/getAvatarUrl";
+import { getAvatarUrl } from "../utils/profileUtils/getAvatarUrl";
 
 export function MyProfileScreen() {
   const { accessToken, logout } = useAuth();
@@ -21,12 +21,10 @@ export function MyProfileScreen() {
     console.error(error);
     return <Text>Error loading profile...</Text>
   }
-  
-
   const { username, description } = data;
   const avatarUrl = getAvatarUrl(data.userId);
   return (
-    <View className="flex-1 items-center justify-center bg-card">
+    <View className="flex-1 items-center justify-center ">
       <ProfileView username={username} description={description} avatarUrl={avatarUrl} isOwnProfile={true} />
       <Pressable
         onPress={logout}

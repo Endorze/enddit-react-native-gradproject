@@ -1,15 +1,7 @@
 import { useState } from "react";
 import { View, Text, Pressable, Image } from "react-native";
-
-type ProfileViewProps = {
-  username: string;
-  description?: string;
-  avatarUrl?: string | null;
-  isOwnProfile?: boolean;
-  onEditProfilePress?: () => void;
-  onAddFriendPress?: () => void;
-  addFriendDisabled?: boolean;
-};
+import { useNavigateTo } from "../../../hooks/useNavigateTo";
+import { ProfileViewProps } from "../../../types/user";
 
 export default function ProfileView({
   username,
@@ -20,6 +12,7 @@ export default function ProfileView({
 }: ProfileViewProps) {
 
   const [avatarError, setAvatarError] = useState(false);
+  const navigateTo = useNavigateTo();
 
   const source =
     !avatarUrl || avatarError
@@ -27,11 +20,7 @@ export default function ProfileView({
       : { uri: avatarUrl };
 
   return (
-    <View className="flex-1 items-center justify-center bg-card px-6">
-      <Text className="text-2xl text-white mb-4">
-        {isOwnProfile ? "My Profile 👋" : `${username}'s Profile`}
-      </Text>
-
+    <View className="flex-1 items-center justify-center px-6">
       <View className="w-24 h-24 rounded-full bg-gray-700 mb-4 overflow-hidden items-center justify-center">
         {avatarUrl &&
           <Image
@@ -45,7 +34,7 @@ export default function ProfileView({
       </View>
 
 
-      <Text className="text-white text-xl font-semibold mb-2">
+      <Text className=" text-xl font-semibold mb-2">
         {username}
       </Text>
 
@@ -55,7 +44,7 @@ export default function ProfileView({
 
       {isOwnProfile ? (
         <Pressable className="p-3 bg-green-600 rounded-lg">
-          <Text className="text-white font-semibold">Edit Profile</Text>
+          <Text onPress={() => navigateTo("EditProfile")} className="text-white font-semibold">Edit Profile</Text>
         </Pressable>
       ) : (
         <Pressable onPress={onAddFriendPress} className="p-3 bg-blue-600 rounded-lg">

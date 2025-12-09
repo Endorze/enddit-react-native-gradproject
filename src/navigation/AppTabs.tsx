@@ -25,11 +25,13 @@ export function AppTabs() {
     queryKey: ["friendRequests"],
     queryFn: () => getFriendRequests(accessToken!),
     enabled: !!accessToken,
-    refetchInterval: 10000, 
+    refetchInterval: 10000,
   });
 
   const hasUnreadFriendRequests = friendRequests.length > 0;
   const unreadCount = friendRequests.length;
+
+  const tabBarHeight = 100
 
   return (
     <Tab.Navigator
@@ -59,7 +61,7 @@ export function AppTabs() {
           } else if (route.name === "Inbox") {
             if (hasUnreadFriendRequests) {
               iconName = "mail-unread-outline";
-              iconColor = "#f97316"; 
+              iconColor = "#f97316";
             } else {
               iconName = focused ? "mail" : "mail-outline";
             }

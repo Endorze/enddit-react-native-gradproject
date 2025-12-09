@@ -3,30 +3,48 @@ import { useState } from "react";
 import { FontAwesome } from "@expo/vector-icons";
 import { Post } from "../../types/post";
 import { AuthorAvatar } from "../AuthorAvatar/AuthorAvatar";
-import { useQuery } from "@tanstack/react-query";
-import { getCommentsForPost } from "../../utils/getPostComments";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { CommentForPost } from "../../types/commentlist";
-import { useToggleLike } from "../../utils/toggleLike";
+import { useToggleLike } from "../../utils/postUtils/toggleLike";
 import { useAuth } from "../../context/AuthContext";
 import CommentSection from "../CommentSection/CommentSection";
+import { deletePost } from "../../utils/postUtils/deletePost";
+import { getCommentsForPost } from "../../utils/postUtils/getPostComments";
 
 export function PostCard({ post }: { post: Post }) {
+
   const { data: comments } = useQuery<CommentForPost[]>({
     queryKey: ["comments", post.id],
     queryFn: () => getCommentsForPost(post.id),
   });
 
   const toggleLikeOnServer = useToggleLike(post.id);
-  const { user } = useAuth();
-
+  const { user, accessToken } = useAuth();
   const currentUserId = user?.id;
   const isOwner = currentUserId === post.user_id;
-
   const [likesCount, setLikesCount] = useState(post.likesCount ?? 0);
   const [liked, setLiked] = useState(!!post.likedByCurrentUser);
   const [isToggling, setIsToggling] = useState(false);
   const [toggleModal, setToggleModal] = useState(false);
   const [menuVisible, setMenuVisible] = useState(false);
+  const [expanded, setExpanded] = useState(false);
+  const MAX_LENGTH = 60;
+  const isLong = post.content.length > MAX_LENGTH;
+  const displayedText = expanded
+    ? post.content
+    : post.content.slice(0, MAX_LENGTH);
+  const queryClient = useQueryClient();
+
+  const deleteMutation = useMutation({
+    mutationFn: () =>
+      deletePost({postId: post.id, accessToken: accessToken!}),
+    onSuccess: () => {
+      queryClient.invalidateQueries({queryKey:["posts"]})
+    }, onError: (err) => {
+      console.warn("Failed to delete post", err)
+    }
+  })
+
 
   const handleToggleLike = async () => {
     if (isToggling) return;
@@ -52,20 +70,18 @@ export function PostCard({ post }: { post: Post }) {
   const handleDeletePost = () => {
     console.log("tried to delete post")
     setMenuVisible(false);
-    // TODO: din delete-logik här (t.ex. kalla DELETE /api/posts/:id + invalidation)
+    deleteMutation.mutate();
   };
 
   const handleReportPost = () => {
     console.log("tried to report post.")
     setMenuVisible(false);
-    // TODO: din report-logik här (t.ex. öppna modal eller POST /api/posts/:id/report)
   };
 
   return (
     <View className="mb-3 min-w-full border-top shadow-sm bg-white">
       <View className="p-4 flex flex-col">
         <View className="flex flex-row items-center justify-between">
-          {/* Vänster: avatar + username */}
           <View className="flex flex-row items-center gap-2 flex-1">
             <AuthorAvatar userId={post.user_id} username={post.username} />
             <Text className="text-black text-2xl font-semibold">
@@ -126,7 +142,21 @@ export function PostCard({ post }: { post: Post }) {
 
         </View>
 
-        <Text className="text-muted mt-2">{post.content}</Text>
+        <View className="mt-2">
+          <Text className="text-muted">
+            {displayedText}
+            {!expanded && isLong && "..."}
+          </Text>
+
+          {isLong && (
+            <Pressable onPress={() => setExpanded(!expanded)}>
+              <Text className="text-blue-500 font-semibold mt-1">
+                {expanded ? "Show less" : "Read more"}
+              </Text>
+            </Pressable>
+          )}
+        </View>
+
       </View>
 
       {post.image && (
@@ -137,7 +167,7 @@ export function PostCard({ post }: { post: Post }) {
         />
       )}
 
-      <View className="flex-row items-center justify-between px-4 py-2">
+      <View className="flex-row items-center justify-between p-4">
         <Pressable
           onPress={handleToggleLike}
           disabled={isToggling}

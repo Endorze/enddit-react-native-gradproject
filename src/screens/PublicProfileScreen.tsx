@@ -2,9 +2,9 @@ import { View, Text } from "react-native";
 import { useRoute } from "@react-navigation/native";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useAuth } from "../context/AuthContext";
-import { getPublicProfile } from "../utils/getPublicProfile";
+import { getPublicProfile } from "../utils/profileUtils/getPublicProfile";
 import ProfileView from "../components/ui/profile/ProfileView";
-import { getAvatarUrl } from "../utils/getAvatarUrl";
+import { getAvatarUrl } from "../utils/profileUtils/getAvatarUrl";
 import { sendFriendRequest } from "../utils/sendFriendRequest";
 
 type RouteParams = {

@@ -13,10 +13,10 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useRoute } from "@react-navigation/native";
 import { useAuth } from "../context/AuthContext";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { getMessages, Message } from "../utils/getMessages";
+import { getMessages, Message } from "../utils/chatUtils/getMessages";
 import { sendMessage } from "../utils/sendMessage";
-import { getAvatarUrl } from "../utils/getAvatarUrl";
-import { isSameDay, formatDateHeader, formatTime } from "../utils/dateHelpers";
+import { getAvatarUrl } from "../utils/profileUtils/getAvatarUrl";
+import { isSameDay, formatDateHeader, formatTime } from "../utils/chatUtils/dateHelpers";
 import { ChatParams } from "../types/chatParams";
 
 export function ChatScreen() {

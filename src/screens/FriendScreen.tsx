@@ -3,13 +3,15 @@ import { useAuth } from "../context/AuthContext";
 import { useQuery } from "@tanstack/react-query";
 import { getFriends, Friend } from "../utils/getFriends";
 import { useState } from "react";
-import { useNavigation } from "@react-navigation/native";
-import { getAvatarUrl } from "../utils/getAvatarUrl";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
+import { getAvatarUrl } from "../utils/profileUtils/getAvatarUrl";
+import { AuthorAvatar } from "../components/AuthorAvatar/AuthorAvatar";
 
 export function FriendScreen() {
   const { accessToken } = useAuth();
   const navigation = useNavigation<any>();
   const [search, setSearch] = useState("");
+  const isFocused = useIsFocused();
 
   const {
     data: friends = [],
@@ -19,6 +21,7 @@ export function FriendScreen() {
     queryKey: ["friends"],
     queryFn: () => getFriends(accessToken!),
     enabled: !!accessToken,
+    refetchInterval: isFocused ? 10000 : false,
   });
 
   const filtered = friends.filter((f) =>
@@ -27,7 +30,7 @@ export function FriendScreen() {
 
   if (isLoading) {
     return (
-      <View className="flex-1 items-center justify-center bg-background">
+      <View className="flex-1 items-center justify-center">
         <ActivityIndicator />
         <Text className="text-white mt-2">Loading friends…</Text>
       </View>
@@ -36,22 +39,22 @@ export function FriendScreen() {
 
   if (error) {
     return (
-      <View className="flex-1 items-center justify-center bg-background px-4">
+      <View className="flex-1 items-center justify-center px-4">
         <Text className="text-red-400">Failed to load friends.</Text>
       </View>
     );
   }
 
   return (
-    <View className="flex-1 bg-background px-4 pt-6">
-      <Text className="text-2xl text-white font-bold mb-4">Chats</Text>
+    <View className="flex-1 px-4 pt-6">
+      <Text className="text-2xl font-bold mb-4">Chats</Text>
 
       <TextInput
         placeholder="Search in Enddit"
         placeholderTextColor="#9CA3AF"
         value={search}
         onChangeText={setSearch}
-        className="w-full bg-card text-white px-4 py-2 rounded-xl mb-4"
+        className="w-full bg-gray-300 text-white px-4 py-2 mb-4"
       />
 
       {filtered.length === 0 ? (
@@ -72,20 +75,16 @@ export function FriendScreen() {
                   navigation.navigate("Chat", {
                     friendId: item.userId,
                     username: item.username,
-                    avatarUrl, 
+                    avatarUrl,
                   })
                 }
-                className="flex-row items-center bg-card rounded-2xl px-4 py-3 mb-3"
+                className="flex-row items-center bg-gray-300  px-4 py-3 mb-3"
               >
                 <View className="w-12 h-12 rounded-full bg-gray-700 overflow-hidden items-center justify-center mr-3">
-                  {avatarUrl ? (
-                    <Image
-                      source={{ uri: avatarUrl }}
-                      className="w-12 h-12"
-                      resizeMode="cover"
-                    />
-                  ) : (
-                    <Text className="text-white text-xs">No avatar</Text>
+                  {avatarUrl && (
+                    <View>
+                      <AuthorAvatar userId={item.userId} username={item.username} />
+                    </View>
                   )}
                 </View>
                 <Text className="text-white text-lg font-medium">

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { getCommentsForPost } from "../../utils/getPostComments";
 import { Pressable, TextInput, View, Text } from "react-native";
-import { addComment } from "../../utils/addComment";
+import { addComment } from "../../utils/postUtils/addComment";
 import CommentsList from "../feed/CommentList";
 import { useAuth } from "../../context/AuthContext";
 import { AuthorAvatar } from "../AuthorAvatar/AuthorAvatar";

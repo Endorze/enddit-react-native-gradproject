@@ -1,5 +1,5 @@
 import Constants from "expo-constants";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 import { useCallback } from "react";
 
 const API_URL = Constants.expoConfig?.extra?.API_URL;

@@ -1,7 +1,7 @@
 import { Image, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
-import { getAvatarUrl } from "../../utils/getAvatarUrl";
+import { getAvatarUrl } from "../../utils/profileUtils/getAvatarUrl";
 
 type AuthorAvatarProps = {
   userId: string;

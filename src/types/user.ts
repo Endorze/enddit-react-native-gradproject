@@ -4,3 +4,13 @@ export type User = {
     username: string,
     email: string,
 }
+
+export type ProfileViewProps = {
+  username: string;
+  description?: string;
+  avatarUrl?: string | null;
+  isOwnProfile?: boolean;
+  onEditProfilePress?: () => void;
+  onAddFriendPress?: () => void;
+  addFriendDisabled?: boolean;
+};

@@ -1,5 +1,5 @@
 import Constants from "expo-constants";
-import { CommentForPost } from "../types/commentlist";
+import { CommentForPost } from "../../types/commentlist";
 
 const API_URL = Constants.expoConfig?.extra?.API_URL;
 
