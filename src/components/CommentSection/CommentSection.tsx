@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { getCommentsForPost } from "../../utils/getPostComments";
+import { getCommentsForPost } from "../../utils/postUtils/getPostComments";
 import { Pressable, TextInput, View, Text } from "react-native";
 import { addComment } from "../../utils/postUtils/addComment";
 import CommentsList from "../feed/CommentList";
@@ -34,7 +34,6 @@ const CommentSection = ({ postId }: { postId: number }) => {
 
     return (
         <View>
-            {/* <AuthorAvatar userId={""} /> */}
             <View className="flex gap-2">
                 <View className="flex flex-col gap-2 border w-full border-gray-400 rounded-2xl px-3 py-2">
                     <TextInput

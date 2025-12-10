@@ -8,6 +8,7 @@ import { useUserProfile } from "../hooks/useUserProfile";
 import defaultBanner from "../../assets/default-banner.jpg";
 import { getAvatarUrl } from "../utils/profileUtils/getAvatarUrl";
 import { API_URL } from "../utils/getUrl";
+import { getBannerUrl } from "../utils/profileUtils/getBannerUrl";
 
 export function EditProfileScreen() {
     const { accessToken, user } = useAuth();
@@ -15,6 +16,7 @@ export function EditProfileScreen() {
     const [profileImage, setProfileImage] = useState<string | null>(null);
     const [bannerImage, setBannerImage] = useState<string | null>(null);
     const { data, isLoading, error } = useUserProfile(accessToken);
+    const [initialized, setInitialized] = useState(false);
 
     const isLocalUri = (uri: string) =>
         uri.startsWith("file://") || uri.startsWith("content://") || uri.startsWith("ph://"); // iOS-varianter
@@ -23,9 +25,10 @@ export function EditProfileScreen() {
         if (data) {
             setDescription(data.description ?? "");
             setProfileImage(getAvatarUrl(user.id) ?? null);
-            setBannerImage(data.bannerUrl ?? null);
+            setBannerImage(getBannerUrl(user.id) ?? null);
+            setInitialized(true);
         }
-    }, [data]);
+    }, [data, user.id, initialized]);
 
     if (isLoading) {
         return (
@@ -118,11 +121,13 @@ export function EditProfileScreen() {
                     <View className="px-4 -mt-10 flex-row items-end">
                         <View className="w-24 h-24 rounded-full border-4 border-gray-950 bg-gray-700 overflow-hidden">
                             {profileImage ? (
-                                <Image
-                                    source={{ uri: profileImage }}
-                                    className="w-full h-full"
-                                    resizeMode="cover"
-                                />
+                                <View>
+                                    <Image
+                                        source={{ uri: profileImage }}
+                                        className="w-full h-full"
+                                        resizeMode="cover"
+                                    />
+                                </View>
                             ) : (
                                 <View className="flex-1 items-center justify-center">
                                     <Ionicons name="person" size={32} color="#9CA3AF" />

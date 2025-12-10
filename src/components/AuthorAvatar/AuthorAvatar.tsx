@@ -1,7 +1,7 @@
 import { Image, Pressable } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { useState } from "react";
-import { getAvatarUrl } from "../../utils/profileUtils/getAvatarUrl";
+import { useAvatarUrl } from "../../utils/profileUtils/getAvatarUrl";
 
 type AuthorAvatarProps = {
   userId: string;
@@ -11,13 +11,13 @@ type AuthorAvatarProps = {
 export function AuthorAvatar({ userId, username }: AuthorAvatarProps) {
   const [hasError, setHasError] = useState(false);
   const navigation = useNavigation<any>();
+  const { url, refresh } = useAvatarUrl(userId);
 
-  const uri = getAvatarUrl(userId);
-
-  const source = !uri || hasError
+  const source = !url || hasError
     ? require("../../../assets/default-avatar.png")
-    : { uri };
+    : { uri: url };
 
+   
   return (
     <Pressable
       onPress={() => {

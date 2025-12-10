@@ -5,6 +5,7 @@ import { PublicProfileScreen } from "../screens/PublicProfileScreen";
 import { FriendScreen } from "../screens/FriendScreen";
 import { ChatScreen } from "../screens/ChatScreen";
 import { EditProfileScreen } from "../screens/EditProfileScreen";
+import { PostDetailsScreen } from "../screens/PostDetailsScreen";
 
 export type AppStackParamList = {
   Home: undefined,
@@ -13,6 +14,7 @@ export type AppStackParamList = {
   Friends: undefined,
   Chat: undefined,
   EditProfile: undefined,
+  PostDetails: undefined,
 };
 
 const Stack = createNativeStackNavigator<AppStackParamList>();
@@ -37,6 +39,11 @@ export function AppStack() {
       <Stack.Screen name="Friends" component={FriendScreen} />
       <Stack.Screen name="Chat" component={ChatScreen} />
       <Stack.Screen name="EditProfile" component={EditProfileScreen} />
+       <Stack.Screen
+        name="PostDetails"
+        component={PostDetailsScreen}
+        options={{ title: "Inlägg" }}
+      />
 
 
 

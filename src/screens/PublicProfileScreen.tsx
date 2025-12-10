@@ -6,6 +6,7 @@ import { getPublicProfile } from "../utils/profileUtils/getPublicProfile";
 import ProfileView from "../components/ui/profile/ProfileView";
 import { getAvatarUrl } from "../utils/profileUtils/getAvatarUrl";
 import { sendFriendRequest } from "../utils/sendFriendRequest";
+import { getBannerUrl } from "../utils/profileUtils/getBannerUrl";
 
 type RouteParams = {
   username: string;
@@ -33,6 +34,7 @@ export function PublicProfileScreen() {
   const { description, userId } = data;
   const ownProfile = user?.id === data.userId;
   const avatarUrl = getAvatarUrl(userId);
+  const bannerUrl = getBannerUrl(userId);
 
   const handleAddFriend = () => {
     if (ownProfile) return;
@@ -42,6 +44,8 @@ export function PublicProfileScreen() {
   return (
     <View className="flex-1 items-center justify-center bg-card">
       <ProfileView
+        id={userId}
+        bannerUrl={bannerUrl}
         username={username}
         description={description}
         avatarUrl={avatarUrl}

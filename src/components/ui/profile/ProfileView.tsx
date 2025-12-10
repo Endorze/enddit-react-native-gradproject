@@ -2,16 +2,20 @@ import { useState } from "react";
 import { View, Text, Pressable, Image } from "react-native";
 import { useNavigateTo } from "../../../hooks/useNavigateTo";
 import { ProfileViewProps } from "../../../types/user";
+import { UserProfilePostGrid } from "../../UserProfilePostGrid/userProfilePostGrid";
 
 export default function ProfileView({
+  id,
   username,
   description,
+  bannerUrl,
   avatarUrl,
   isOwnProfile = false,
   onAddFriendPress,
 }: ProfileViewProps) {
 
   const [avatarError, setAvatarError] = useState(false);
+  const [bannerError, setBannerError] = useState(false);
   const navigateTo = useNavigateTo();
 
   const source =
@@ -19,38 +23,75 @@ export default function ProfileView({
       ? require("../../../../assets/default-avatar.png")
       : { uri: avatarUrl };
 
-  return (
-    <View className="flex-1 items-center justify-center px-6">
-      <View className="w-24 h-24 rounded-full bg-gray-700 mb-4 overflow-hidden items-center justify-center">
-        {avatarUrl &&
-          <Image
-            source={source}
-            className="w-24 h-24"
-            resizeMode="cover"
-            onError={() => setAvatarError(true)}
-          />
-        }
+  const bannerSource =
+    !bannerUrl || bannerError
+      ? require("../../../../assets/default-banner.jpg")
+      : { uri: bannerUrl };
 
+
+  return (
+    <View className="w-full flex-1 bg-gray-950">
+
+      <View className="w-full h-32 bg-gray-800">
+        <Image
+          source={bannerSource}
+          className="w-full h-full"
+          resizeMode="cover"
+          onError={() => setBannerError(true)}
+        />
+        <View className="w-full h-full bg-gray-800" />
       </View>
 
+      <View className="px-6 -mt-12 flex-1">
+        <View className="flex-row items-end">
+          <View className="w-24 h-24 rounded-full bg-gray-700 overflow-hidden border-4 border-gray-950">
+            <Image
+              source={source}
+              className="w-full h-full"
+              resizeMode="cover"
+              onError={() => setAvatarError(true)}
+            />
+          </View>
+        </View>
 
-      <Text className=" text-xl font-semibold mb-2">
-        {username}
-      </Text>
+        <Text className="mt-3 text-2xl font-semibold text-white">
+          {username}
+        </Text>
 
-      <Text className="text-gray-300 mb-6 text-center">
-        {description || "No bio yet"}
-      </Text>
+        <View className="mt-3 bg-gray-900/90 border border-gray-800 rounded-2xl px-4 py-3">
+          <Text className="text-gray-200">
+            {description && description.trim().length > 0
+              ? description
+              : "No bio yet"}
+          </Text>
+        </View>
 
-      {isOwnProfile ? (
-        <Pressable className="p-3 bg-green-600 rounded-lg">
-          <Text onPress={() => navigateTo("EditProfile")} className="text-white font-semibold">Edit Profile</Text>
-        </Pressable>
-      ) : (
-        <Pressable onPress={onAddFriendPress} className="p-3 bg-blue-600 rounded-lg">
-          <Text className="text-white font-semibold">Add Friend</Text>
-        </Pressable>
-      )}
+        {isOwnProfile ? (
+          <View className="mt-4">
+            <Pressable
+              className="w-full bg-blue-600 rounded-full py-3 items-center"
+              onPress={() => navigateTo && navigateTo("EditProfile")}
+            >
+              <Text className="text-white font-semibold text-base">
+                Edit Profile
+              </Text>
+            </Pressable>
+          </View>
+        ) : (
+          <View className="mt-4">
+            <Pressable
+              className="w-full bg-blue-600 rounded-full py-3 items-center"
+              onPress={onAddFriendPress}
+            >
+              <Text className="text-white font-semibold text-base">
+                Add Friend
+              </Text>
+            </Pressable>
+          </View>
+        )}
+        <UserProfilePostGrid userId={id} />
+      </View>
     </View>
   );
+
 }

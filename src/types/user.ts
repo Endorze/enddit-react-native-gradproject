@@ -6,9 +6,11 @@ export type User = {
 }
 
 export type ProfileViewProps = {
+  id: string,
   username: string;
   description?: string;
   avatarUrl?: string | null;
+  bannerUrl?: string | null;
   isOwnProfile?: boolean;
   onEditProfilePress?: () => void;
   onAddFriendPress?: () => void;
