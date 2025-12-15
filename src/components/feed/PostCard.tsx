@@ -191,7 +191,7 @@ export function PostCard({ post }: { post: Post }) {
         >
           <FontAwesome name="comment-o" size={20} color="#9ca3af" />
           <Text className="ml-2 text-gray-400">
-            {comments?.length ?? 0} kommentarer
+            {comments?.length ?? 0} comments
           </Text>
         </Pressable>
       </View>
@@ -205,9 +205,9 @@ export function PostCard({ post }: { post: Post }) {
         <View className="flex-1 justify-end bg-black/40">
           <View className="h-[100%] bg-white rounded-t-3xl p-4">
             <View className="flex-row justify-between items-center mb-3">
-              <Text className="text-lg font-semibold">Kommentarer</Text>
+              <Text className="text-lg font-semibold">Comments</Text>
               <Pressable onPress={() => setToggleModal(false)}>
-                <Text className="text-blue-500 font-semibold">Stäng</Text>
+                <Text className="text-blue-500 font-semibold">Close</Text>
               </Pressable>
             </View>
 

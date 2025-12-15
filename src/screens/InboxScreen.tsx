@@ -69,8 +69,8 @@ export function InboxScreen() {
           contentContainerStyle={{ paddingBottom: 24 }}
           renderItem={({ item }) => {
             return (
-              <View className="flex-row items-center bg-gray-300 px-4 py-3 mb-3">
-                <View className="w-12 h-12 rounded-full bg-gray-700 overflow-hidden items-center justify-center mr-3">
+              <View className="flex-row items-center  px-4 py-3 mb-3">
+                <View className="w-12 h-12 rounded-full overflow-hidden items-center justify-center mr-3">
                   <AuthorAvatar
                     userId={item.fromUserId}
                     username={item.username}
@@ -78,7 +78,7 @@ export function InboxScreen() {
                 </View>
 
                 <View className="flex-1">
-                  <Text className="text-white font-semibold">{item.username}</Text>
+                  <Text className="font-semibold">{item.username}</Text>
                   <Text className="text-gray-700 text-sm">
                     wants to be your friend
                   </Text>

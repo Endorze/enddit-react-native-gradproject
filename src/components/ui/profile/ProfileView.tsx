@@ -28,22 +28,26 @@ export default function ProfileView({
       ? require("../../../../assets/default-banner.jpg")
       : { uri: bannerUrl };
 
+  const cleanBio =
+    (description ?? "")
+      .replace(/\r\n/g, "\n")
+      .replace(/\n{3,}/g, "\n\n")
+      .trim();
 
   return (
-    <View className="w-full flex-1 bg-gray-950">
+    <View className="w-full flex-1">
 
-      <View className="w-full h-32 bg-gray-800">
+      <View className="w-full h-32">
         <Image
           source={bannerSource}
           className="w-full h-full"
           resizeMode="cover"
           onError={() => setBannerError(true)}
         />
-        <View className="w-full h-full bg-gray-800" />
       </View>
 
-      <View className="px-6 -mt-12 flex-1">
-        <View className="flex-row items-end">
+      <View className="px-6 -mt-12  ">
+        <View className="flex-row items-center gap-2">
           <View className="w-24 h-24 rounded-full bg-gray-700 overflow-hidden border-4 border-gray-950">
             <Image
               source={source}
@@ -52,28 +56,47 @@ export default function ProfileView({
               onError={() => setAvatarError(true)}
             />
           </View>
+          <Text className="mt-8 text-xl font-semibold">
+            {username}
+          </Text>
         </View>
 
-        <Text className="mt-3 text-2xl font-semibold text-white">
-          {username}
-        </Text>
 
-        <View className="mt-3 bg-gray-900/90 border border-gray-800 rounded-2xl px-4 py-3">
-          <Text className="text-gray-200">
-            {description && description.trim().length > 0
-              ? description
-              : "No bio yet"}
+        <View className="flex flex-col">
+          <Text className="text-gray-600">
+            {cleanBio.length > 0 ? cleanBio : "No bio yet"}
+          </Text>
+          <Text className="font-semibold mt-4 mb-4">
+            @{username}
           </Text>
         </View>
 
         {isOwnProfile ? (
-          <View className="mt-4">
+          <View className="flex flex-row gap-2">
             <Pressable
-              className="w-full bg-blue-600 rounded-full py-3 items-center"
+              android_ripple={{
+                color: "#e0e0e0",
+                borderless: false,
+                foreground: true,
+              }}
+              className="w-full bg-gray-600 rounded-xl flex-1 py-1 items-center"
               onPress={() => navigateTo && navigateTo("EditProfile")}
             >
               <Text className="text-white font-semibold text-base">
                 Edit Profile
+              </Text>
+            </Pressable>
+            <Pressable
+              android_ripple={{
+                color: "#e0e0e0",
+                borderless: false,
+                foreground: true,
+              }}
+              className="w-full bg-gray-600 rounded-xl flex-1 py-1 items-center"
+              onPress={() => navigateTo && navigateTo("EditProfile")}
+            >
+              <Text className="text-white font-semibold text-base">
+                Share Profile
               </Text>
             </Pressable>
           </View>
@@ -89,6 +112,9 @@ export default function ProfileView({
             </Pressable>
           </View>
         )}
+      </View>
+      <View className="flex-1">
+
         <UserProfilePostGrid userId={id} />
       </View>
     </View>

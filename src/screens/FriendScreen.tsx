@@ -46,7 +46,7 @@ export function FriendScreen() {
   }
 
   return (
-    <View className="flex-1 px-4 pt-6">
+    <View className="flex-1 px-4 pt-6 bg-white">
       <Text className="text-2xl font-bold mb-4">Chats</Text>
 
       <TextInput
@@ -54,12 +54,12 @@ export function FriendScreen() {
         placeholderTextColor="#9CA3AF"
         value={search}
         onChangeText={setSearch}
-        className="w-full bg-gray-300 text-white px-4 py-2 mb-4"
+        className="w-full rounded-xl bg-gray-100 px-4 py-2 mb-4"
       />
 
       {filtered.length === 0 ? (
         <View className="flex-1 items-center justify-center">
-          <Text className="text-gray-400">No friends found.</Text>
+          <Text className="text-gray-300">No friends found.</Text>
         </View>
       ) : (
         <FlatList
@@ -71,6 +71,15 @@ export function FriendScreen() {
 
             return (
               <Pressable
+                android_ripple={{
+                  color: "#d4d4d4",      
+                  borderless: false,
+                  foreground: true,     
+                }}
+                className="flex-row items-center px-4 py-3 mb-3 bg-white rounded-xl"
+                style={({ pressed }) => [
+                  pressed && { opacity: 0.7 },
+                ]}
                 onPress={() =>
                   navigation.navigate("Chat", {
                     friendId: item.userId,
@@ -78,7 +87,6 @@ export function FriendScreen() {
                     avatarUrl,
                   })
                 }
-                className="flex-row items-center bg-gray-300  px-4 py-3 mb-3"
               >
                 <View className="w-12 h-12 rounded-full bg-gray-700 overflow-hidden items-center justify-center mr-3">
                   {avatarUrl && (
@@ -87,9 +95,14 @@ export function FriendScreen() {
                     </View>
                   )}
                 </View>
-                <Text className="text-white text-lg font-medium">
-                  {item.username}
-                </Text>
+                <View>
+                  <Text className="text-black text-lg font-medium">
+                    {item.username}
+                  </Text>
+                  <Text className="text-gray-400">
+                    Start chatting...
+                  </Text>
+                </View>
               </Pressable>
             );
           }}

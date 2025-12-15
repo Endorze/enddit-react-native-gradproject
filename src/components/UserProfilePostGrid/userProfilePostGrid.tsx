@@ -56,7 +56,7 @@ export function UserProfilePostGrid({ userId }: UserProfilePostGridProps) {
         <FlatGrid
             data={posts}
             itemDimension={110}
-            spacing={2}
+            spacing={0}
             staticDimension={undefined}
             style={{ marginTop: 16 }}
             renderItem={({ item }) => (

@@ -70,7 +70,7 @@ export function CreatePostScreen() {
     <SafeAreaView
       className="flex-1"
       edges={["top", "left", "right"]}>
-      <View className="relative flex flex-col w-full justify-between flex-1"> 
+      <View className="relative flex flex-col w-full justify-between flex-1">
         <View className="flex flex-col flex-1">
           <View className="flex flex-row items-center gap-2 mt-10 px-4">
             <AuthorAvatar userId={data.userId} username={data.username} />
@@ -99,23 +99,28 @@ export function CreatePostScreen() {
 
         </View>
 
-          {imageUri && (
-            <View className="bg-gray-200 flex-1">
-              <Image
-                source={{ uri: imageUri }}
-                className="w-full h-full"
-                resizeMode="cover"
-              />
-            </View>
-          )}
+        {imageUri && (
+          <View className="bg-gray-200 flex-1">
+            <Image
+              source={{ uri: imageUri }}
+              className="w-full h-full"
+              resizeMode="cover"
+            />
+          </View>
+        )}
 
         <Pressable
+          android_ripple={{
+            color: "#e0e0e0",   
+            borderless: false,  
+            foreground: true,
+          }}
           onPress={submitPost}
           className="bg-blue-600 py-4 w-full items-center"
           style={({ pressed }) => [{ opacity: pressed ? 0.7 : 1 }]}
         >
           <Text className="text-white font-bold text-lg">Post</Text>
-        </Pressable> 
+        </Pressable>
 
       </View>
     </SafeAreaView>

@@ -85,8 +85,7 @@ export function EditProfileScreen() {
 
     return (
         <SafeAreaView
-            className="flex-1 bg-gray-950"
-            edges={["top", "left", "right"]}
+            className="flex-1"
         >
             <View className="flex-1">
                 <View className="relative">
@@ -118,7 +117,7 @@ export function EditProfileScreen() {
                         <Ionicons name="camera" size={18} color="#fff" />
                     </Pressable>
 
-                    <View className="px-4 -mt-10 flex-row items-end">
+                    <View className="px-4 -mt-10 flex-row items-center">
                         <View className="w-24 h-24 rounded-full border-4 border-gray-950 bg-gray-700 overflow-hidden">
                             {profileImage ? (
                                 <View>
@@ -137,7 +136,7 @@ export function EditProfileScreen() {
 
                         <Pressable
                             onPress={() => pickImage(setProfileImage)}
-                            className="ml-3 px-3 py-1 rounded-full bg-gray-800 flex-row items-center"
+                            className="ml-3 px-3 py-1 rounded-xl bg-gray-800 flex-row items-center"
                         >
                             <Ionicons name="camera" size={16} color="#e5e7eb" />
                             <Text className="text-gray-200 text-sm ml-1">
@@ -147,7 +146,7 @@ export function EditProfileScreen() {
                     </View>
 
                     <View className="px-4 mt-3">
-                        <Text className="text-xl font-semibold text-white">
+                        <Text className="text-xl font-semibold">
                             {data.username}
                         </Text>
                         <Text className="text-xs text-gray-400 mt-0.5">
@@ -157,7 +156,7 @@ export function EditProfileScreen() {
                 </View>
 
                 <View className="px-4 mt-6 flex-1">
-                    <Text className="text-sm font-medium text-gray-200 mb-2">
+                    <Text className="text-sm font-medium text-gray-400 mb-2">
                         Bio
                     </Text>
                     <TextInput
@@ -165,7 +164,7 @@ export function EditProfileScreen() {
                         placeholderTextColor="#6B7280"
                         value={description}
                         onChangeText={setDescription}
-                        className="bg-gray-900 border border-gray-700 rounded-xl text-white px-4 py-3"
+                        className="bg-gray-200 shadow-sm rounded-xl text-gray-700 px-4 py-3"
                         multiline
                         numberOfLines={4}
                         textAlignVertical="top"
@@ -173,6 +172,11 @@ export function EditProfileScreen() {
                 </View>
 
                 <Pressable
+                    android_ripple={{
+                        color: "#e0e0e0",
+                        borderless: false,
+                        foreground: true,
+                    }}
                     onPress={submitProfileChanges}
                     className="bg-blue-600 py-4 w-full items-center"
                     style={({ pressed }) => [{ opacity: pressed ? 0.7 : 1 }]}

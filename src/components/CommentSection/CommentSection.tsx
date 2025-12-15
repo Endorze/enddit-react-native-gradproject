@@ -5,7 +5,8 @@ import { Pressable, TextInput, View, Text } from "react-native";
 import { addComment } from "../../utils/postUtils/addComment";
 import CommentsList from "../feed/CommentList";
 import { useAuth } from "../../context/AuthContext";
-import { AuthorAvatar } from "../AuthorAvatar/AuthorAvatar";
+import { Ionicons } from "@expo/vector-icons";
+
 
 const CommentSection = ({ postId }: { postId: number }) => {
     const [newComment, setNewComment] = useState("");
@@ -30,12 +31,12 @@ const CommentSection = ({ postId }: { postId: number }) => {
         },
     });
 
-    if (isLoading) return <p className="text-center mt-4 text-gray-500 text-sm">Loading comments…</p>;
+    if (isLoading) return <Text className="text-center mt-4 text-gray-500 text-sm">Loading comments…</Text>;
 
     return (
         <View>
             <View className="flex gap-2">
-                <View className="flex flex-col gap-2 border w-full border-gray-400 rounded-2xl px-3 py-2">
+                <View className="flex flex-col gap-2 w-full bg-gray-200 rounded-2xl px-3 py-2 mb-2">
                     <TextInput
                         placeholder="Write a comment..."
                         value={newComment}
@@ -50,10 +51,15 @@ const CommentSection = ({ postId }: { postId: number }) => {
                                 mutation.mutate();
                             }}
                             disabled={mutation.isPending}
-                            className="bg-blue-600 w-fit font-semibold text-white self-end px-3 py-1 rounded-md text-sm hover:bg-blue-700 disabled:opacity-50"
+                            className="bg-blue-600 self-end px-3 py-2 rounded-md disabled:opacity-50"
                         >
-                            <Text>Send</Text>
+                            <Ionicons
+                                name="paper-plane"
+                                size={16}
+                                color="white"
+                            />
                         </Pressable>
+
                     )}
                 </View>
             </View>
@@ -64,6 +70,7 @@ const CommentSection = ({ postId }: { postId: number }) => {
                     )}
                 </View>
             ) : (
+                
                 <View className="space-y-2 mb-3">
                     <CommentsList comments={comments} />
                 </View>

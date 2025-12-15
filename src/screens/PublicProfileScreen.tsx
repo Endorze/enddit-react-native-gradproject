@@ -42,7 +42,7 @@ export function PublicProfileScreen() {
   };
 
   return (
-    <View className="flex-1 items-center justify-center bg-card">
+    <View className="flex-1 items-center justify-center">
       <ProfileView
         id={userId}
         bannerUrl={bannerUrl}
